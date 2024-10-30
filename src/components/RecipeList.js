@@ -4,24 +4,38 @@ import RecipeDetails from "./RecipeDetails";
 
 const RecipeList = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
 
   const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
   };
 
+  const filteredRecipes = recipes.filter((recipe) =>
+    recipe.ingredients.some((ingredient) =>
+      ingredient.toLowerCase().includes(searchValue.toLowerCase())
+    )
+  );
+
   return (
     <div>
-      <h2>Recipe List</h2>
+      <h2>Список рецептов</h2>
+      <input
+        type="text"
+        placeholder="Поиск по ингредиентам"
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
+      />
       <ul>
-        {recipes.map((recipe) => (
+        {filteredRecipes.map((recipe) => (
           <li key={recipe.id} onClick={() => handleRecipeClick(recipe)}>
             <h3>{recipe.title}</h3>
             <p>{recipe.description}</p>
             <img src={recipe.image} alt={recipe.title} />
+            <p>Ингредиенты: {recipe.ingredients.join(", ")}</p>
           </li>
         ))}
       </ul>
-      <RecipeDetails recipe={selectedRecipe} />
+      {selectedRecipe && <RecipeDetails recipe={selectedRecipe} />}
     </div>
   );
 };
