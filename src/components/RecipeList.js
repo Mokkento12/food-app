@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import recipes from "../data";
-import RecipeDetails from "./RecipeDetails";
+import RecipeCard from "./RecipeCard/RecipeCard";
 
 const RecipeList = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -8,6 +8,10 @@ const RecipeList = () => {
 
   const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
+  };
+
+  const handleClose = () => {
+    setSelectedRecipe(null);
   };
 
   const filteredRecipes = recipes.filter((recipe) =>
@@ -35,7 +39,9 @@ const RecipeList = () => {
           </li>
         ))}
       </ul>
-      {selectedRecipe && <RecipeDetails recipe={selectedRecipe} />}
+      {selectedRecipe && (
+        <RecipeCard recipe={selectedRecipe} onClose={handleClose} />
+      )}
     </div>
   );
 };
